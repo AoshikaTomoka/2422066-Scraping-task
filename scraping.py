@@ -12,7 +12,7 @@ sitemap = {}
 
 urls = [url]
 
-visited = [url]
+visited = []
 
 while len(urls) > 0:
     # リストの先頭からURLを取り出す
