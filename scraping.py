@@ -67,5 +67,5 @@ with open('sitemap.csv', 'w', newline='', encoding='utf-8') as csvfile:
     for url, title in sitemap.items():
         writer.writerow([url, title])  # URLとタイトルを書き込む
 
-print("サイトマップの作成が完了しました。sitemap.csvに保存されました。")
+print("サイトマップの作成が完了。sitemap.csvに保存")
 print ('取得したページ数:', len(sitemap))
