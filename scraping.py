@@ -57,8 +57,9 @@ while len(urls) > 0:
                 urls.append(absolute_url)
 
     except requests.exceptions.RequestException as e:
-        print('アクセスできなかった')
+        print('アクセスできなかった:', current_url)
         print(e)
+        continue
 
 # 辞書の内容をCSVファイルに書き込む
 with open('sitemap.csv', 'w', newline='', encoding='utf-8') as csvfile:
