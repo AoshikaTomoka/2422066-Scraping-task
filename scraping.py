@@ -52,9 +52,15 @@ while len(urls) > 0:
             # 絶対URLに変換
             absolute_url = urljoin(current_url, href)
 
-            # ドメインが同じで、まだ訪問していないURLをリストに追加
-            if urlparse(absolute_url).netloc == domain and absolute_url not in visited:
-                urls.append(absolute_url)
+            # #以降を取り除く
+            absolute_url = absolute_url.split('#')[0]
+
+            # ドメインが同じか確認
+            if urlparse(absolute_url).netloc == domain:
+
+                # 未訪問で、リストにもないURLだけ追加
+                if absolute_url not in visited and absolute_url not in urls:
+                    urls.append(absolute_url)
 
     except requests.exceptions.RequestException as e:
         print('アクセスできなかった:', current_url)
@@ -62,7 +68,7 @@ while len(urls) > 0:
         continue
 
 # 辞書の内容をCSVファイルに書き込む
-with open('sitemap.csv', 'w', newline='', encoding='utf-8') as csvfile:
+with open('sitemap.csv', 'w', newline='', encoding='utf-8-sig') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(['URL', 'Title'])  # ヘッダー行を書き込む
     for url, title in sitemap.items():
