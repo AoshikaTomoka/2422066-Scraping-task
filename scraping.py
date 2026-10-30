@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from bs4.exceptions import ParserRejectedMarkup
 import time
 import csv
 from urllib.parse import urljoin, urlparse
@@ -26,14 +27,15 @@ while len(urls) > 0:
 
     try:
         # サーバーの負荷を避けるために0,5秒待機
-        time.sleep(0.5)
+        time.sleep(0.3)
 
-        # URLにアクセスしてHTMLを取得
         response = requests.get(current_url, timeout=10)
-        response.raise_for_status()  # HTTPエラーが発生した場合に例外
 
-        # HTMLを解析
-        soup = BeautifulSoup(response.text, 'html.parser')
+        # HTTPエラーがあれば例外にする
+        response.raise_for_status()
+
+        # HTMLを解析する
+        soup = BeautifulSoup(response.content, 'html.parser')
 
         # ページタイトルを取得
         title_tag = soup.find('title')
@@ -64,6 +66,11 @@ while len(urls) > 0:
 
     except requests.exceptions.RequestException as e:
         print('アクセスできなかった:', current_url)
+        print(e)
+        continue
+
+    except ParserRejectedMarkup as e:
+        print('HTMLを解析できなかった:', current_url)
         print(e)
         continue
 
